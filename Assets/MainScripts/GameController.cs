@@ -3,20 +3,22 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
+
 public class GameController : MonoBehaviour
 {
     [SerializeField] private GameObject prefabButon;
     [SerializeField] private int fieldSize;
     [SerializeField] private GridLayoutGroup grid;
-    private List<ButtonClick> _buttonList;
+    [SerializeField] private List<ButtonClick> buttonList;
     
     void Start()
     {
         grid.constraintCount = fieldSize;
-        for (int i = 0; i < _buttonList.Count; i++)
+        for (int i = 0; i < buttonList.Count; i++)
         {
             var id = i;
-            _buttonList[i].Delegate = () => MoveButton(id);
+            buttonList[i].Delegate = () => MoveButton(id);
         }
     }
     
