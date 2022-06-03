@@ -9,6 +9,7 @@ public class ButtonClick : MonoBehaviour
     
     void Start()
     {
+        _button = GetComponent<Button>();
         _button.onClick.AddListener( () => Delegate.Invoke());
     }
     
