@@ -2,22 +2,25 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ButtonClick : MonoBehaviour
+namespace MainScripts
 {
-    public Action<int> Delegate { get; set; }
-    private Button _button;
-    public int id { get; set; }
-    public bool itIsImage = false;
-    
-    void Start()
+    public class ButtonClick : MonoBehaviour
     {
-        _button = GetComponent<Button>();
-        _button.onClick.AddListener( () => Delegate.Invoke(id));
-    }
+        public Action<int> Delegate { get; set; }
+        private Button _button;
+        public int id { get; set; }
+        public bool itIsImage = false;
     
-    public void ChangeText(string newText)
-    {
-        GetComponentInChildren<Text>().text = newText;
-    }
+        void Start()
+        {
+            _button = GetComponent<Button>();
+            _button.onClick.AddListener( () => Delegate.Invoke(id));
+        }
     
+        public void ChangeText(string newText)
+        {
+            GetComponentInChildren<Text>().text = newText;
+        }
+    
+    }
 }

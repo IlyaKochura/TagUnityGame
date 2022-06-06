@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using MainScripts;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
@@ -11,6 +12,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private int fieldSize;
     [SerializeField] private GridLayoutGroup grid;
     [SerializeField] private List<ButtonClick> buttonList;
+
+    private int _currentId = 15;
 
     void Start()
     {
@@ -48,26 +51,34 @@ public class GameController : MonoBehaviour
 
     private void MoveButton(int index)
     {
-        if ((index + 1 <= buttonList.Count && buttonList[index + 1].itIsImage) || 
-            (index - 1 >= 0 && buttonList[index - 1].itIsImage) ||
-            (index - 4 >= 0 && buttonList[index - 4].itIsImage)|| 
-            (index + 4 <= buttonList.Count && buttonList[index + 4].itIsImage))
+        if ((index + 1 == _currentId  && (_currentId + 1) % 4 == 0)||
+            (index - 1 == _currentId && (_currentId) % 4 == 0)||
+            index + 4 == _currentId ||
+            index - 4 == _currentId 
+           )
         {
-            var pos1 = buttonList[index].transform.localPosition;
-            var pos2 = buttonList[ItIsMark()].transform.localPosition;
-            buttonList[index].transform.localPosition = new Vector3(pos2.x, pos2.y);
-            buttonList[ItIsMark()].transform.localPosition = new Vector3(pos1.x, pos1.y);
+            var pos1 = GetButtonById(index).transform.localPosition;
+            var pos2 = GetButtonById(_currentId).transform.localPosition;
+            GetButtonById(index).transform.localPosition = pos2;
+            GetButtonById(_currentId).transform.localPosition = pos1;
 
-
-            var posit = ItIsMark();
-
-            var but1 = buttonList[index];
-            buttonList[index] = buttonList[posit];
-            buttonList[posit] = but1;
-
-            buttonList[index].id = index;
-            buttonList[posit].id = posit;
-
+            var b1 = GetButtonById(index);
+            var b2 = GetButtonById(_currentId);
+            b1.id = _currentId;
+            b2.id = index;
+            
+            _currentId = index;
         }
+    }
+
+    private ButtonClick GetButtonById(int id)
+    {
+        foreach (var button in buttonList)
+        {
+            if (button.id == id)
+                return button;
+        }
+
+        return null;
     }
 }
