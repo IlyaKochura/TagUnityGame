@@ -48,22 +48,26 @@ public class GameController : MonoBehaviour
 
     private void MoveButton(int index)
     {
-        
-        var pos1 = buttonList[index].transform.localPosition;
-        var pos2 = buttonList[ItIsMark()].transform.localPosition;
-        buttonList[index].transform.localPosition = new Vector3(pos2.x,pos2.y);
-        buttonList[ItIsMark()].transform.localPosition = new Vector3(pos1.x, pos1.y);
+        if ((index + 1 <= buttonList.Count && buttonList[index + 1].itIsImage) || 
+            (index - 1 >= 0 && buttonList[index - 1].itIsImage) ||
+            (index - 4 >= 0 && buttonList[index - 4].itIsImage)|| 
+            (index + 4 <= buttonList.Count && buttonList[index + 4].itIsImage))
+        {
+            var pos1 = buttonList[index].transform.localPosition;
+            var pos2 = buttonList[ItIsMark()].transform.localPosition;
+            buttonList[index].transform.localPosition = new Vector3(pos2.x, pos2.y);
+            buttonList[ItIsMark()].transform.localPosition = new Vector3(pos1.x, pos1.y);
 
 
-        var posit = ItIsMark();
-            
-        var but1 = buttonList[index];
-        buttonList[index] = buttonList[posit];
-        buttonList[posit] = but1;
-        
-        buttonList[index].id = index;
-        buttonList[posit].id = posit;
+            var posit = ItIsMark();
 
+            var but1 = buttonList[index];
+            buttonList[index] = buttonList[posit];
+            buttonList[posit] = but1;
 
+            buttonList[index].id = index;
+            buttonList[posit].id = posit;
+
+        }
     }
 }
