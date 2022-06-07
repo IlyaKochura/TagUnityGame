@@ -51,8 +51,8 @@ public class GameController : MonoBehaviour
 
     private void MoveButton(int index)
     {
-        if ((index + 1 == _currentId  && (_currentId + 1) % 4 == 0)||
-            (index - 1 == _currentId && (_currentId) % 4 == 0)||
+        if ((index + 1 == _currentId  && (_currentId - 1) % 2 == 0)||
+            (index - 1 == _currentId && (_currentId) % 2 == 0)||
             index + 4 == _currentId ||
             index - 4 == _currentId 
            )
@@ -68,6 +68,7 @@ public class GameController : MonoBehaviour
             b2.id = index;
             
             _currentId = index;
+            
         }
     }
 
