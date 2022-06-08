@@ -8,15 +8,18 @@ using UnityEngine.Serialization;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField] private GameObject prefabButon;
+    [SerializeField] private ButtonClick prefabButon;
+    [SerializeField] private Transform canvasPosition;
     [SerializeField] private int fieldSize;
     [SerializeField] private GridLayoutGroup grid;
-    [SerializeField] private List<ButtonClick> buttonList;
+    private List<ButtonClick> buttonList;
 
     private int _currentId = 15;
 
     void Start()
     {
+        SpawnObject();
+        
         grid.constraintCount = fieldSize;
         for (int i = 0; i < buttonList.Count; i++)
         {
@@ -28,30 +31,24 @@ public class GameController : MonoBehaviour
     
     private void SpawnObject()
     {
+        var sizeField = Convert.ToInt32(Math.Pow(fieldSize, 2));
+        var slot = Instantiate(prefabButon, canvasPosition);
 
-    }
-
-    public int ItIsMark()
-    {
-        for (int i = 0; i < buttonList.Count; i++)
+        for (int i = 1; i <= sizeField; i++)
         {
-            if (buttonList[i].itIsImage)
-            {
-                return i;
-                break;
-            }
+            buttonList.Add(slot);
         }
-        return 0;
     }
+
+    
 
     private void MoveButton(int index)
     {
         
-        if ( (index + 1 == _currentId  && (_currentId % 4) != 0) ||
-             (index - 1 == _currentId && (_currentId + 1) % 4 != 0) ||
-            index + 4 == _currentId ||
-            index - 4 == _currentId 
-           )
+        if ((index + 1 == _currentId  && (_currentId % fieldSize) != 0) ||
+             (index - 1 == _currentId && (_currentId + 1) % fieldSize != 0) ||
+            index + fieldSize == _currentId ||
+            index - fieldSize == _currentId)
         {
             var pos1 = GetButtonById(index).transform.localPosition;
             var pos2 = GetButtonById(_currentId).transform.localPosition;
@@ -79,4 +76,20 @@ public class GameController : MonoBehaviour
         return null;
         
     }
+    
+    
 }
+
+
+// public int ItIsMark()
+// {
+//     for (int i = 0; i < buttonList.Count; i++)
+//     {
+//         if (buttonList[i].itIsImage)
+//         {
+//             return i;
+//             break;
+//         }
+//     }
+//     return 0;
+// }
