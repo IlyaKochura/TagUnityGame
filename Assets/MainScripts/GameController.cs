@@ -25,12 +25,7 @@ public class GameController : MonoBehaviour
             buttonList[i].Delegate = MoveButton;
         }
     }
-
-    void Update()
-    {
-
-    }
-
+    
     private void SpawnObject()
     {
 
@@ -51,8 +46,9 @@ public class GameController : MonoBehaviour
 
     private void MoveButton(int index)
     {
-        if ((index + 1 == _currentId  && (_currentId - 1) % 2 == 0)||
-            (index - 1 == _currentId && (_currentId) % 2 == 0)||
+        
+        if ( (index + 1 == _currentId  && (_currentId % 4) != 0) ||
+             (index - 1 == _currentId && (_currentId + 1) % 4 != 0) ||
             index + 4 == _currentId ||
             index - 4 == _currentId 
            )
@@ -81,5 +77,6 @@ public class GameController : MonoBehaviour
         }
 
         return null;
+        
     }
 }

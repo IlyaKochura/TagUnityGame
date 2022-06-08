@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,6 +7,7 @@ namespace MainScripts
 {
     public class ButtonClick : MonoBehaviour
     {
+        public TextMeshProUGUI text;
         public Action<int> Delegate { get; set; }
         private Button _button;
         public int id { get; set; }
@@ -19,7 +21,7 @@ namespace MainScripts
     
         public void ChangeText(string newText)
         {
-            GetComponentInChildren<Text>().text = newText;
+            text.text = newText;
         }
     
     }
