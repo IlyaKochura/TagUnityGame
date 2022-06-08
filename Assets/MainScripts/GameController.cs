@@ -5,6 +5,7 @@ using MainScripts;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using Random = System.Random;
 
 public class GameController : MonoBehaviour
 {
@@ -12,7 +13,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private Transform canvasPosition;
     [SerializeField] private int fieldSize;
     [SerializeField] private GridLayoutGroup grid;
-    private List<ButtonClick> buttonList;
+    [SerializeField] private MixButton mixingButton;
+    [SerializeField] private List<ButtonClick> buttonList;
 
     private int _currentId;
 
@@ -20,7 +22,6 @@ public class GameController : MonoBehaviour
     {
         _currentId = fieldSize * fieldSize - 1;
         buttonList = new List<ButtonClick>(fieldSize * fieldSize);
-        
         
         grid.constraintCount = fieldSize;
         for (int i = 0; i < fieldSize * fieldSize; i++)
@@ -36,8 +37,9 @@ public class GameController : MonoBehaviour
             {
                 buttonList[i].ChangeText("");
             }
-            
         }
+
+        mixingButton.action = () => MixingCells();
     }
     
     private void MoveButton(int index)
@@ -74,8 +76,20 @@ public class GameController : MonoBehaviour
         return null;
         
     }
-    
-    
+
+    private void MixingCells()
+    {
+        Random rnd = new Random();
+
+        for (int i = 0; i < buttonList.Count; i++)
+        {
+            var RND = rnd.Next(0, buttonList.Count - 1);
+            var posI = buttonList[i];
+            var posRND = buttonList[RND];
+            buttonList[i] = posRND;
+            buttonList[RND] = posI;
+        }
+    }
 }
 
 
