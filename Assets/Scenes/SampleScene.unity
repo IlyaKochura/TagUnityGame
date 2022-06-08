@@ -389,27 +389,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 630c78394b208ce4685730cada1ba408, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabButon: {fileID: 0}
-  canvasPosition: {fileID: 0}
+  prefabButon: {fileID: 4541400901583049691, guid: 09e2b64297a39c74bb391231f1ac9cce, type: 3}
+  canvasPosition: {fileID: 949959906}
   fieldSize: 4
   grid: {fileID: 949959907}
-  buttonList:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!1 &949959905
 GameObject:
   m_ObjectHideFlags: 0

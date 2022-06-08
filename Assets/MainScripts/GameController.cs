@@ -14,34 +14,32 @@ public class GameController : MonoBehaviour
     [SerializeField] private GridLayoutGroup grid;
     private List<ButtonClick> buttonList;
 
-    private int _currentId = 15;
+    private int _currentId;
 
     void Start()
     {
-        SpawnObject();
+        _currentId = fieldSize * fieldSize - 1;
+        buttonList = new List<ButtonClick>(fieldSize * fieldSize);
+        
         
         grid.constraintCount = fieldSize;
-        for (int i = 0; i < buttonList.Count; i++)
+        for (int i = 0; i < fieldSize * fieldSize; i++)
         {
+            var slot = Instantiate(prefabButon, canvasPosition);
+            buttonList.Add(slot);
             var id = i;
             buttonList[i].id = i;
             buttonList[i].Delegate = MoveButton;
+            buttonList[i].ChangeText((i+1).ToString());
+
+            if (i == fieldSize * fieldSize - 1)
+            {
+                buttonList[i].ChangeText("");
+            }
+            
         }
     }
     
-    private void SpawnObject()
-    {
-        var sizeField = Convert.ToInt32(Math.Pow(fieldSize, 2));
-        var slot = Instantiate(prefabButon, canvasPosition);
-
-        for (int i = 1; i <= sizeField; i++)
-        {
-            buttonList.Add(slot);
-        }
-    }
-
-    
-
     private void MoveButton(int index)
     {
         
