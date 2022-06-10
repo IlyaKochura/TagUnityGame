@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using MainScripts;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using Random = System.Random;
 
 public class GameController : MonoBehaviour
@@ -16,6 +14,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private MixButton mixingButton;
     [SerializeField] private List<ButtonClick> buttonList;
 
+  
     private int _currentId;
 
     void Start()
@@ -23,30 +22,37 @@ public class GameController : MonoBehaviour
         _currentId = fieldSize * fieldSize - 1;
         buttonList = new List<ButtonClick>(fieldSize * fieldSize);
         
+        
         grid.constraintCount = fieldSize;
         for (int i = 0; i < fieldSize * fieldSize; i++)
         {
             var slot = Instantiate(prefabButon, canvasPosition);
             buttonList.Add(slot);
-            var id = i;
-            buttonList[i].id = i;
-            buttonList[i].Delegate = MoveButton;
             buttonList[i].ChangeText((i+1).ToString());
-
+            
             if (i == fieldSize * fieldSize - 1)
             {
                 buttonList[i].ChangeText("");
             }
+            
+        }
+        
+        Invoke(nameof(MixingCells), 0.1f);
+        
+        for (int i = 0; i < fieldSize * fieldSize; i++)
+        {
+            var id = i;
+            buttonList[i].id = i;
+            buttonList[i].Delegate = MoveButton;
         }
 
-        mixingButton.action = () => MixingCells();
+        
     }
     
     private void MoveButton(int index)
     {
-        
         if ((index + 1 == _currentId  && (_currentId % fieldSize) != 0) ||
-             (index - 1 == _currentId && (_currentId + 1) % fieldSize != 0) ||
+            (index - 1 == _currentId && (_currentId + 1) % fieldSize != 0) ||
             index + fieldSize == _currentId ||
             index - fieldSize == _currentId)
         {
@@ -61,7 +67,7 @@ public class GameController : MonoBehaviour
             b2.id = index;
             
             _currentId = index;
-            
+
         }
     }
 
@@ -81,17 +87,17 @@ public class GameController : MonoBehaviour
     {
         Random rnd = new Random();
 
-        for (int i = 0; i < buttonList.Count; i++)
+        for (int i = 0; i < fieldSize * fieldSize; i++)
         {
-            var RND = rnd.Next(0, buttonList.Count - 1);
-            var posI = buttonList[i];
-            var posRND = buttonList[RND];
-            buttonList[i] = posRND;
-            buttonList[RND] = posI;
+            var RND = rnd.Next(0, fieldSize * fieldSize - 1);
+            var posI = buttonList[i].transform.localPosition;
+            var posRND = buttonList[RND].transform.localPosition;
+            buttonList[i].transform.localPosition = new Vector3(posRND.x,posRND.y);
+            buttonList[RND].transform.localPosition = new Vector3(posI.x,posI.y);
+            
         }
     }
 }
-
 
 // public int ItIsMark()
 // {

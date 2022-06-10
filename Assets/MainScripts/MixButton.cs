@@ -4,13 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MixButton : MonoBehaviour
+
+namespace MainScripts
 {
-    public Action action { get; set; }
-    private Button _button;
-    void Start()
+    public class MixButton : MonoBehaviour
     {
-        _button = GetComponent<Button>();
-        _button.onClick.AddListener( () => action.Invoke());
+        public Action action { get; set; }
+        private Button _button;
+        void Start()
+        {
+            _button = GetComponent<Button>();
+            _button.onClick.AddListener( () => action.Invoke());
+        }
     }
 }
