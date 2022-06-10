@@ -36,9 +36,7 @@ public class GameController : MonoBehaviour
             }
             
         }
-        
-        Invoke(nameof(MixingCells), 0.1f);
-        
+
         for (int i = 0; i < fieldSize * fieldSize; i++)
         {
             var id = i;
@@ -67,8 +65,9 @@ public class GameController : MonoBehaviour
             b2.id = index;
             
             _currentId = index;
-
         }
+
+        MixingCells();
     }
 
     private ButtonClick GetButtonById(int id)
