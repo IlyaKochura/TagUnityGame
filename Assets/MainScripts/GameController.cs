@@ -19,10 +19,7 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
-        _currentId = fieldSize * fieldSize - 1;
         buttonList = new List<ButtonClick>(fieldSize * fieldSize);
-
-
         grid.constraintCount = fieldSize;
         for (int i = 0; i < fieldSize * fieldSize; i++)
         {
@@ -45,6 +42,18 @@ public class GameController : MonoBehaviour
             var id = i;
             buttonList[i].id = i;
             buttonList[i].Delegate = MoveButton;
+        }
+        
+    }
+
+    private void Update()
+    {
+        for (int i = 0; i < buttonList.Count; i++)
+        {
+            if (buttonList[i].text.text == "")
+            {
+                _currentId = i;
+            }
         }
     }
 
@@ -91,18 +100,12 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < fieldSize * fieldSize; i++)
         {
             var RND = rnd.Next(0, fieldSize * fieldSize - 1);
-            var posI = buttonList[i].transform.localPosition;
-            var posRND = buttonList[RND].transform.localPosition;
-
-            Debug.LogError(buttonList[i].transform.localPosition);
-            Debug.LogError(buttonList[RND].transform.localPosition);
-
-
-            buttonList[i].transform.localPosition = new Vector3(posRND.x, posRND.y);
-            buttonList[RND].transform.localPosition = new Vector3(posI.x, posI.y);
-
-            Debug.LogError(buttonList[i].transform.localPosition);
-            Debug.LogError(buttonList[RND].transform.localPosition);
+            var posI = buttonList[i].text.text;
+            var posRND = buttonList[RND].text.text;
+            
+            buttonList[i].text.text = posRND;
+            buttonList[RND].text.text = posI;
+            
         }
         
     }
