@@ -1,10 +1,7 @@
 using UnityEngine;
-using System;
 using System.Collections.Generic;
 using MainScripts;
 using UnityEngine.UI;
-using UnityEditor.SceneManagement;
-using UnityEngine.SceneManagement;
 using Random = System.Random;
 
 public class GameController : MonoBehaviour
@@ -25,8 +22,8 @@ public class GameController : MonoBehaviour
         {
             var slot = Instantiate(prefabButon, canvasPosition);
             buttonList.Add(slot);
-            
-            
+            buttonList[i].id = i;
+            buttonList[i].Delegate = MoveButton;
             buttonList[i].ChangeText((i + 1).ToString());
             if (i == fieldSize * fieldSize - 1)
             {
@@ -35,13 +32,6 @@ public class GameController : MonoBehaviour
         }
         
         mixingButton.action += MixingCells;
-        
-        for (int i = 0; i < fieldSize * fieldSize; i++)
-        {
-            var id = i;
-            buttonList[i].id = i;
-            buttonList[i].Delegate = MoveButton;
-        }
         _currentId = buttonList.Count - 1;
     }
 
@@ -82,12 +72,12 @@ public class GameController : MonoBehaviour
         
         for (int i = 0; i < fieldSize * fieldSize; i++)
         {
-            var RND = rnd.Next(0, fieldSize * fieldSize - 1);
+            var next = rnd.Next(0, fieldSize * fieldSize - 1);
             var posI = buttonList[i].text.text;
-            var posRND = buttonList[RND].text.text;
+            var posRnd = buttonList[next].text.text;
             
-            buttonList[i].text.text = posRND;
-            buttonList[RND].text.text = posI;
+            buttonList[i].text.text = posRnd;
+            buttonList[next].text.text = posI;
             
         }
         
@@ -99,10 +89,5 @@ public class GameController : MonoBehaviour
                 break;
             }
         }
-    }
-
-    private void SceneReload()
-    {
-        SceneManager.LoadScene(0);
     }
 }
