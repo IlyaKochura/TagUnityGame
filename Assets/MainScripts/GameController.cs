@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using MainScripts;
 using UnityEngine.UI;
+using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 using Random = System.Random;
 
 public class GameController : MonoBehaviour
@@ -13,8 +15,6 @@ public class GameController : MonoBehaviour
     [SerializeField] private GridLayoutGroup grid;
     [SerializeField] private MixButton mixingButton;
     [SerializeField] private List<ButtonClick> buttonList;
-
-
     private int _currentId;
 
     void Start()
@@ -24,18 +24,17 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < fieldSize * fieldSize; i++)
         {
             var slot = Instantiate(prefabButon, canvasPosition);
-
-
             buttonList.Add(slot);
+            
+            
             buttonList[i].ChangeText((i + 1).ToString());
-
             if (i == fieldSize * fieldSize - 1)
             {
                 buttonList[i].ChangeText("");
             }
         }
         
-        mixingButton.action = MixingCells;
+        mixingButton.action += MixingCells;
         
         for (int i = 0; i < fieldSize * fieldSize; i++)
         {
@@ -43,24 +42,11 @@ public class GameController : MonoBehaviour
             buttonList[i].id = i;
             buttonList[i].Delegate = MoveButton;
         }
-        
-    }
-
-    private void Update()
-    {
-        for (int i = 0; i < buttonList.Count; i++)
-        {
-            if (buttonList[i].text.text == "")
-            {
-                _currentId = i;
-            }
-        }
+        _currentId = buttonList.Count - 1;
     }
 
     private void MoveButton(int index)
     {
-        Debug.LogError(index);
-
         if ((index + 1 == _currentId && (_currentId % fieldSize) != 0) ||
             (index - 1 == _currentId && (_currentId + 1) % fieldSize != 0) ||
             index + fieldSize == _currentId ||
@@ -87,16 +73,13 @@ public class GameController : MonoBehaviour
             if (button.id == id)
                 return button;
         }
-
         return null;
     }
 
     private void MixingCells()
     {
         Random rnd = new Random();
-
-        Debug.LogError(buttonList.Count);
-
+        
         for (int i = 0; i < fieldSize * fieldSize; i++)
         {
             var RND = rnd.Next(0, fieldSize * fieldSize - 1);
@@ -108,5 +91,18 @@ public class GameController : MonoBehaviour
             
         }
         
+        for (int i = 0; i < buttonList.Count; i++)
+        {
+            if (buttonList[i].text.text == "")
+            {
+                _currentId = i;
+                break;
+            }
+        }
+    }
+
+    private void SceneReload()
+    {
+        SceneManager.LoadScene(0);
     }
 }
