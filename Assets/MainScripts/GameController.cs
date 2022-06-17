@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private GridLayoutGroup grid;
     [SerializeField] private MixButton mixingButton;
     [SerializeField] private List<ButtonClick> buttonList;
+    public List<ButtonClick> _variableMove;
     private int _currentId;
 
     void Start()
@@ -24,15 +25,16 @@ public class GameController : MonoBehaviour
             buttonList.Add(slot);
             buttonList[i].id = i;
             buttonList[i].Delegate = MoveButton;
+            mixingButton.action = () => MixingCells(buttonList[i].id);
             buttonList[i].ChangeText((i + 1).ToString());
             if (i == fieldSize * fieldSize - 1)
             {
                 buttonList[i].ChangeText("");
             }
         }
-        
-        mixingButton.action += MixingCells;
+        mixingButton.action = () => MixingCells(buttonList[1].id);
         _currentId = buttonList.Count - 1;
+        
     }
 
     private void MoveButton(int index)
@@ -66,28 +68,28 @@ public class GameController : MonoBehaviour
         return null;
     }
 
-    private void MixingCells()
+    private void MixingCells(int index)
     {
-        Random rnd = new Random();
         
-        for (int i = 0; i < fieldSize * fieldSize; i++)
-        {
-            var next = rnd.Next(0, fieldSize * fieldSize - 1);
-            var posI = buttonList[i].text.text;
-            var posRnd = buttonList[next].text.text;
-            
-            buttonList[i].text.text = posRnd;
-            buttonList[next].text.text = posI;
-            
-        }
+        Random rnd = new Random();
+    
+        
         
         for (int i = 0; i < buttonList.Count; i++)
         {
-            if (buttonList[i].text.text == "")
+            _variableMove = new List<ButtonClick>(i + 1);
+            if ((index + 1 == _currentId && (_currentId % fieldSize) != 0) ||
+                (index - 1 == _currentId && (_currentId + 1) % fieldSize != 0) ||
+                index + fieldSize == _currentId ||
+                index - fieldSize == _currentId)
             {
-                _currentId = i;
-                break;
+                _variableMove.Add(buttonList[i]);
             }
         }
+        
+        // var b1 = GetButtonById(index);
+        // var b2 = GetButtonById(_currentId);
+        // b1.id = _currentId;
+        // b2.id = index;
     }
 }

@@ -531,6 +531,7 @@ MonoBehaviour:
   grid: {fileID: 949959907}
   mixingButton: {fileID: 544133787}
   buttonList: []
+  _variableMove: []
 --- !u!1 &949959905
 GameObject:
   m_ObjectHideFlags: 0
