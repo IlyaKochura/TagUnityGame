@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 using MainScripts;
@@ -13,7 +14,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private GridLayoutGroup grid;
     [SerializeField] private MixButton mixingButton;
     private List<ButtonClick> _buttonList;
-    private List<ButtonClick> _variableMove = new();
+    private List<ButtonClick> _variableMove = new(); 
     [SerializeField] private List<Transform> _startPosition = new();
     private int _currentId;
 
@@ -48,6 +49,11 @@ public class GameController : MonoBehaviour
             index - fieldSize == _currentId)
         {
             Movement(index);
+        }
+
+        if (WinBool())
+        {
+            Debug.LogError("Win");
         }
     }
 
@@ -103,8 +109,19 @@ public class GameController : MonoBehaviour
         VariableMove();
     }
 
-    private void WinChecker()
+    
+
+    private bool WinBool()
     {
-        
+        for (int i = 0; i < _buttonList.Count; i++)
+        {
+            if (i + 1 != Convert.ToUInt32(_buttonList[i].text.text))
+            {
+                return false;
+            }
+            
+        }
+
+        return true;
     }
 }
