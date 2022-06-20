@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 using MainScripts;
-using UnityEditor.MPE;
 using UnityEngine.UI;
 using Random = System.Random;
 
@@ -13,9 +12,9 @@ public class GameController : MonoBehaviour
     [SerializeField] private int fieldSize;
     [SerializeField] private GridLayoutGroup grid;
     [SerializeField] private MixButton mixingButton;
+    [SerializeField] private GameObject winEnscription;
     private List<ButtonClick> _buttonList;
-    private List<ButtonClick> _variableMove = new(); 
-    [SerializeField] private List<Transform> _startPosition = new();
+    private List<ButtonClick> _variableMove = new();
     private int _currentId;
 
     void Start()
@@ -34,13 +33,11 @@ public class GameController : MonoBehaviour
             {
                 _buttonList[i].ChangeText("");
             }
-            _startPosition.Add(_buttonList[i].transform);
         }
         
         _currentId = _buttonList.Count - 1;
         VariableMove();
     }
-
     private void MoveButton(int index)
     {
         if ((index + 1 == _currentId && (_currentId % fieldSize) != 0) ||
@@ -53,7 +50,7 @@ public class GameController : MonoBehaviour
 
         if (WinBool())
         {
-            Debug.LogError("Win");
+            winEnscription.SetActive(true);
         }
     }
 
@@ -108,20 +105,16 @@ public class GameController : MonoBehaviour
         
         VariableMove();
     }
-
     
-
     private bool WinBool()
     {
         for (int i = 0; i < _buttonList.Count; i++)
         {
-            if (i + 1 != Convert.ToUInt32(_buttonList[i].text.text))
+            if (i != _buttonList[i].id)
             {
                 return false;
             }
-            
         }
-
         return true;
     }
 }
