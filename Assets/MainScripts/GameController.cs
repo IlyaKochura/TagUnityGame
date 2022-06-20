@@ -12,13 +12,12 @@ public class GameController : MonoBehaviour
     [SerializeField] private GridLayoutGroup grid;
     [SerializeField] private MixButton mixingButton;
     private List<ButtonClick> _buttonList;
-    private List<ButtonClick> _variableMove; 
+    public List<ButtonClick> _variableMove; 
     private int _currentId;
 
     void Start()
     {
         _buttonList = new List<ButtonClick>(fieldSize * fieldSize);
-        
         grid.constraintCount = fieldSize;
         for (int i = 0; i < fieldSize * fieldSize; i++)
         {
@@ -33,6 +32,7 @@ public class GameController : MonoBehaviour
                 _buttonList[i].ChangeText("");
             }
         }
+        
         _currentId = _buttonList.Count - 1;
         VariableMove();
     }
