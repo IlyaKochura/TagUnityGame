@@ -101,7 +101,6 @@ public class GameController : MonoBehaviour
         _currentId = index;
         
         VariableMove();
-        WinChecker();
     }
 
     private void WinChecker()
