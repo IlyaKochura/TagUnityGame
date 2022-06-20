@@ -12,7 +12,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private GridLayoutGroup grid;
     [SerializeField] private MixButton mixingButton;
     private List<ButtonClick> _buttonList;
-    public List<ButtonClick> _variableMove; 
+    private List<ButtonClick> _variableMove = new();
     private int _currentId;
 
     void Start()
