@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using MainScripts;
+using UnityEditor.MPE;
 using UnityEngine.UI;
 using Random = System.Random;
 
@@ -13,6 +14,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private MixButton mixingButton;
     private List<ButtonClick> _buttonList;
     private List<ButtonClick> _variableMove = new();
+    [SerializeField] private List<Transform> _startPosition = new();
     private int _currentId;
 
     void Start()
@@ -31,6 +33,7 @@ public class GameController : MonoBehaviour
             {
                 _buttonList[i].ChangeText("");
             }
+            _startPosition.Add(_buttonList[i].transform);
         }
         
         _currentId = _buttonList.Count - 1;
@@ -98,5 +101,11 @@ public class GameController : MonoBehaviour
         _currentId = index;
         
         VariableMove();
+        WinChecker();
+    }
+
+    private void WinChecker()
+    {
+        
     }
 }
