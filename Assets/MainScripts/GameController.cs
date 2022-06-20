@@ -11,30 +11,30 @@ public class GameController : MonoBehaviour
     [SerializeField] private int fieldSize;
     [SerializeField] private GridLayoutGroup grid;
     [SerializeField] private MixButton mixingButton;
-    [SerializeField] private List<ButtonClick> buttonList;
-    public List<ButtonClick> _variableMove;
+    private List<ButtonClick> _buttonList;
+    private List<ButtonClick> _variableMove; 
     private int _currentId;
 
     void Start()
     {
-        buttonList = new List<ButtonClick>(fieldSize * fieldSize);
+        _buttonList = new List<ButtonClick>(fieldSize * fieldSize);
+        
         grid.constraintCount = fieldSize;
         for (int i = 0; i < fieldSize * fieldSize; i++)
         {
+            mixingButton.action = () => MixMove();
             var slot = Instantiate(prefabButon, canvasPosition);
-            buttonList.Add(slot);
-            buttonList[i].id = i;
-            buttonList[i].Delegate = MoveButton;
-            mixingButton.action = () => MixingCells(buttonList[i].id);
-            buttonList[i].ChangeText((i + 1).ToString());
+            _buttonList.Add(slot);
+            _buttonList[i].id = i;
+            _buttonList[i].Delegate = MoveButton;
+            _buttonList[i].ChangeText((i + 1).ToString());
             if (i == fieldSize * fieldSize - 1)
             {
-                buttonList[i].ChangeText("");
+                _buttonList[i].ChangeText("");
             }
         }
-        mixingButton.action = () => MixingCells(buttonList[1].id);
-        _currentId = buttonList.Count - 1;
-        
+        _currentId = _buttonList.Count - 1;
+        VariableMove();
     }
 
     private void MoveButton(int index)
@@ -44,23 +44,13 @@ public class GameController : MonoBehaviour
             index + fieldSize == _currentId ||
             index - fieldSize == _currentId)
         {
-            var pos1 = GetButtonById(index).transform.localPosition;
-            var pos2 = GetButtonById(_currentId).transform.localPosition;
-            GetButtonById(index).transform.localPosition = pos2;
-            GetButtonById(_currentId).transform.localPosition = pos1;
-
-            var b1 = GetButtonById(index);
-            var b2 = GetButtonById(_currentId);
-            b1.id = _currentId;
-            b2.id = index;
-
-            _currentId = index;
+            Movement(index);
         }
     }
 
     private ButtonClick GetButtonById(int id)
     {
-        foreach (var button in buttonList)
+        foreach (var button in _buttonList)
         {
             if (button.id == id)
                 return button;
@@ -68,28 +58,45 @@ public class GameController : MonoBehaviour
         return null;
     }
 
-    private void MixingCells(int index)
+    private void VariableMove()
     {
-        
-        Random rnd = new Random();
-    
-        
-        
-        for (int i = 0; i < buttonList.Count; i++)
+        _variableMove.Clear();
+        for (int i = 0; i < _buttonList.Count; i++)
         {
-            _variableMove = new List<ButtonClick>(i + 1);
-            if ((index + 1 == _currentId && (_currentId % fieldSize) != 0) ||
-                (index - 1 == _currentId && (_currentId + 1) % fieldSize != 0) ||
-                index + fieldSize == _currentId ||
-                index - fieldSize == _currentId)
+            if ((_buttonList[i].id + 1 == _currentId && (_currentId % fieldSize) != 0) ||
+                (_buttonList[i].id - 1 == _currentId && (_currentId + 1) % fieldSize != 0) ||
+                _buttonList[i].id + fieldSize == _currentId ||
+                _buttonList[i].id - fieldSize == _currentId)
             {
-                _variableMove.Add(buttonList[i]);
+                _variableMove.Add(_buttonList[i]);
             }
         }
+    }
+
+    private void MixMove()
+    {
+        for (int i = 0; i < 200; i++)
+        {
+            Random rnd = new Random();
+            var rand = rnd.Next( 0, _variableMove.Count);
+            Movement(_variableMove[rand].id);
+        }
+    }
+     
+    private void Movement(int index)
+    {
+        var pos1 = GetButtonById(index).transform.localPosition;
+        var pos2 = GetButtonById(_currentId).transform.localPosition;
+        GetButtonById(index).transform.localPosition = pos2;
+        GetButtonById(_currentId).transform.localPosition = pos1;
         
-        // var b1 = GetButtonById(index);
-        // var b2 = GetButtonById(_currentId);
-        // b1.id = _currentId;
-        // b2.id = index;
+        var b1 = GetButtonById(index);
+        var b2 = GetButtonById(_currentId);
+        b1.id = _currentId;
+        b2.id = index;
+        
+        _currentId = index;
+        
+        VariableMove();
     }
 }
