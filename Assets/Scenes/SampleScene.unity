@@ -533,8 +533,8 @@ MonoBehaviour:
   mixingButton: {fileID: 544133787}
   winEnscription: {fileID: 1689999736}
   restart: {fileID: 1172885346}
-  fieldWidth: 5
-  fieldLength: 5
+  fieldWidth: 4
+  fieldLength: 6
   mixCount: 500
 --- !u!1 &949959905
 GameObject:
