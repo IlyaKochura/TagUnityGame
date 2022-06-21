@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = System.Random;
 
@@ -14,16 +15,20 @@ namespace MainScripts
         [SerializeField] private GridLayoutGroup grid;
         [SerializeField] private MixButton mixingButton;
         [SerializeField] private GameObject winEnscription;
+        [SerializeField] private Restart restart;
         private List<ButtonClick> _buttonList;
         private int _currentId;
+        private bool _game;
 
         void Start()
         {
+            _game = true;
             _buttonList = new List<ButtonClick>(fieldWidth * fieldLength);
             grid.constraintCount = fieldLength;
             for (int i = 0; i < fieldWidth * fieldLength; i++)
             {
-                mixingButton.Action = () => MixMove();
+                restart.Action = Restart;
+                mixingButton.Action = MixMove;
                 var slot = Instantiate(prefabButon, canvasPosition);
                 _buttonList.Add(slot);
                 _buttonList[i].ID = i;
@@ -51,6 +56,7 @@ namespace MainScripts
             if (WinBool())
             {
                 winEnscription.SetActive(true);
+                _game = false;
             }
         }
 
@@ -92,19 +98,22 @@ namespace MainScripts
 
         private void Movement(int index)
         {
-            var pos1 = GetButtonById(index).transform.localPosition;
-            var pos2 = GetButtonById(_currentId).transform.localPosition;
-            GetButtonById(index).transform.localPosition = pos2;
-            GetButtonById(_currentId).transform.localPosition = pos1;
+            if (_game)
+            {
+                var pos1 = GetButtonById(index).transform.localPosition;
+                var pos2 = GetButtonById(_currentId).transform.localPosition;
+                GetButtonById(index).transform.localPosition = pos2;
+                GetButtonById(_currentId).transform.localPosition = pos1;
 
-            var b1 = GetButtonById(index);
-            var b2 = GetButtonById(_currentId);
-            b1.ID = _currentId;
-            b2.ID = index;
+                var b1 = GetButtonById(index);
+                var b2 = GetButtonById(_currentId);
+                b1.ID = _currentId;
+                b2.ID = index;
 
-            _currentId = index;
+                _currentId = index;
 
-            VariableMove();
+                VariableMove();
+            }
         }
 
         private bool WinBool()
@@ -117,6 +126,11 @@ namespace MainScripts
                 }
             }
             return true;
+        }
+
+        private void Restart()
+        {
+            SceneManager.LoadScene(0);
         }
     }
 }
