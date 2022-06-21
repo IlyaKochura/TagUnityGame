@@ -528,7 +528,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabButon: {fileID: 4541400901583049691, guid: 09e2b64297a39c74bb391231f1ac9cce, type: 3}
   canvasPosition: {fileID: 949959906}
-  fieldSize: 4
+  fieldWidth: 4
+  fieldLength: 6
   grid: {fileID: 949959907}
   mixingButton: {fileID: 544133787}
   winEnscription: {fileID: 1689999736}
