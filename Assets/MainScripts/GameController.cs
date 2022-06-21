@@ -8,14 +8,18 @@ namespace MainScripts
 {
     public class GameController : MonoBehaviour
     {
+        [Header("Назначалки")]
         [SerializeField] private ButtonClick prefabButon;
         [SerializeField] private Transform canvasPosition;
-        [SerializeField] private int fieldWidth;
-        [SerializeField] private int fieldLength;
         [SerializeField] private GridLayoutGroup grid;
         [SerializeField] private MixButton mixingButton;
         [SerializeField] private GameObject winEnscription;
         [SerializeField] private Restart restart;
+        [Header("Настроечки")]
+        [SerializeField] private int fieldWidth;
+        [SerializeField] private int fieldLength;
+        [SerializeField] private int mixCount;
+        
         private List<ButtonClick> _buttonList;
         private int _currentId;
         private bool _game;
@@ -88,7 +92,7 @@ namespace MainScripts
 
         private void MixMove()
         {
-            for (int i = 0; i < 200; i++)
+            for (int i = 0; i < mixCount; i++)
             {
                 Random rnd = new Random();
                 var rand = rnd.Next(0, VariableMove().Count);

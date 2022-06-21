@@ -529,12 +529,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabButon: {fileID: 4541400901583049691, guid: 09e2b64297a39c74bb391231f1ac9cce, type: 3}
   canvasPosition: {fileID: 949959906}
-  fieldWidth: 5
-  fieldLength: 5
   grid: {fileID: 949959907}
   mixingButton: {fileID: 544133787}
   winEnscription: {fileID: 1689999736}
   restart: {fileID: 1172885346}
+  fieldWidth: 5
+  fieldLength: 5
+  mixCount: 500
 --- !u!1 &949959905
 GameObject:
   m_ObjectHideFlags: 0
