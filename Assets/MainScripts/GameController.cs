@@ -16,19 +16,18 @@ namespace MainScripts
         [SerializeField] private MixButton mixingButton;
         [SerializeField] private GameObject winEnscription;
         [SerializeField] private Restart restart;
+        [SerializeField] private StartButton start;
+        [SerializeField] private GameObject startButton;
         private List<ButtonClick> _buttonList;
         private int _currentId;
-        private bool _game;
+        private bool _game = false;
 
         void Start()
         {
-            _game = true;
             _buttonList = new List<ButtonClick>(fieldWidth * fieldLength);
             grid.constraintCount = fieldLength;
             for (int i = 0; i < fieldWidth * fieldLength; i++)
             {
-                restart.Action = Restart;
-                mixingButton.Action = MixMove;
                 var slot = Instantiate(prefabButon, canvasPosition);
                 _buttonList.Add(slot);
                 _buttonList[i].ID = i;
@@ -39,24 +38,29 @@ namespace MainScripts
                     _buttonList[i].ChangeText("");
                 }
             }
+            start.Action = () => Start();
+            restart.Action = () => Restart();
+            mixingButton.Action = () => MixMove();
             _currentId = _buttonList.Count - 1;
             VariableMove();
         }
 
         private void MoveButton(int index)
         {
-            if ((index + 1 == _currentId && (_currentId % fieldLength) != 0) ||
-                (index - 1 == _currentId && (_currentId + 1) % fieldLength != 0) ||
-                index + fieldLength == _currentId ||
-                index - fieldLength == _currentId)
+            if (_game)
             {
-                Movement(index);
-            }
-
-            if (WinBool())
-            {
-                winEnscription.SetActive(true);
-                _game = false;
+                if ((index + 1 == _currentId && (_currentId % fieldLength) != 0) ||
+                    (index - 1 == _currentId && (_currentId + 1) % fieldLength != 0) ||
+                    index + fieldLength == _currentId ||
+                    index - fieldLength == _currentId)
+                {
+                    Movement(index);
+                }
+                if (WinBool())
+                {
+                    winEnscription.SetActive(true);
+                    _game = false;
+                }
             }
         }
 
@@ -131,6 +135,12 @@ namespace MainScripts
         private void Restart()
         {
             SceneManager.LoadScene(0);
+        }
+
+        private void StartGame()
+        {
+            _game = true;
+            startButton.SetActive(false);
         }
     }
 }
